@@ -1,0 +1,22 @@
+n_quests: 3
+path: log/long_pattern.json
+quest_generator_args:
+  population_size: 100
+  epochs: 100
+  tournament_size: 3
+  crossover_probability: 0.5
+  mutation_probability: 0.5
+parser_args:
+  xml_path: data/geneticquest_db.xml
+world_model_args:
+  initial_state_n: 15
+  final_state_n: 5
+  best_pattern:
+    - 1
+    - 0.5
+    - 0.5
+    - 1
+    - 1
+    - 1
+    - -1
+    - -1

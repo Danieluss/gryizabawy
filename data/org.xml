@@ -365,9 +365,13 @@
 		<predicate name="at">
 			<parameter value="wood2"/> 
 			<parameter value="islandeast"/>  
-		</predicate>
+		</predicate>		
 	</relations>	
 	<predicates>
+		<predicate name="at" initialstate="true" goalstate="true">
+			<parameter type="character" unique="true"/> 
+			<parameter type="location"/> 
+		</predicate>
 		<predicate name="at" initialstate="true" goalstate="true">
 			<parameter type="item" unique="true"/> 
 			<parameter type="location"/> 
@@ -410,9 +414,6 @@
 				<precondition predicate="hero">
 					<parameter name="c"/>
 				</precondition>
-				<precondition predicate="healthy">
-					<parameter name="c"/>
-				</precondition>
 				<precondition predicate="open">
 					<parameter name="l1"/>
 				</precondition>
@@ -431,7 +432,7 @@
 					<parameter name="l1"/>
 				</effect>
 			</effects>
-		</operator>
+		</operator>    
 		<operator name="get">
 			<parameters>
 				<parameter name="c" type="character"/>
@@ -468,42 +469,6 @@
 				</effect>
 			</effects>
 		</operator>	
-		<operator name="putdown">
-			<parameters>
-				<parameter name="c" type="character"/>
-				<parameter name="i" type="item"/>
-				<parameter name="l" type="location"/>
-			</parameters>
-			<preconditions>
-				<effect predicate="has">
-					<parameter name="c"/>
-					<parameter name="i"/>
-				</effect>
-				<precondition predicate="alive">
-					<parameter name="c"/>
-				</precondition>
-				<precondition predicate="hero">
-					<parameter name="c"/>
-				</precondition>
-				<precondition predicate="at">
-					<parameter name="c"/>
-					<parameter name="l"/>
-				</precondition>
-				<precondition predicate="safe">
-					<parameter name="l"/>
-				</precondition>
-			</preconditions>
-			<effects>
-				<effect predicate="at">
-					<parameter name="i"/>
-					<parameter name="l"/>
-				</effect>
-				<effect predicate="has" negation="true">
-					<parameter name="c"/>
-					<parameter name="i"/>
-				</effect>
-			</effects>
-		</operator>	
 		<operator name="ask">
 			<parameters>
 				<parameter name="c1" type="character"/>
@@ -519,8 +484,8 @@
 				<precondition predicate="alive">
 					<parameter name="c1"/>
 				</precondition>
-				<precondition predicate="alive">
-					<parameter name="c2"/>
+				<precondition predicate="hero">
+					<parameter name="c1"/>
 				</precondition>
 				<precondition predicate="healthy">
 					<parameter name="c2"/>
@@ -544,8 +509,8 @@
 		</operator>
 		<operator name="give">
 			<parameters>
-				<parameter name="c2" type="character"/>
 				<parameter name="c1" type="character"/>
+				<parameter name="c2" type="character"/>
 				<parameter name="i" type="item"/>
 				<parameter name="l" type="location"/>
 			</parameters>
@@ -557,8 +522,8 @@
 				<precondition predicate="alive">
 					<parameter name="c1"/>
 				</precondition>
-				<precondition predicate="alive">
-					<parameter name="c2"/>
+				<precondition predicate="hero">
+					<parameter name="c1"/>
 				</precondition>
 				<precondition predicate="healthy">
 					<parameter name="c2"/>
@@ -579,11 +544,11 @@
 			</preconditions>
 			<effects>
 				<effect predicate="has">
-					<parameter name="c1"/>
+					<parameter name="c2"/>
 					<parameter name="i"/>
 				</effect>
 				<effect predicate="has" negation="true">
-					<parameter name="c2"/>
+					<parameter name="c1"/>
 					<parameter name="i"/>
 				</effect>
 			</effects>
@@ -697,27 +662,6 @@
 				</effect>
 			</effects>
 		</operator>
-		<operator name="dieofinfection">
-			<parameters>
-				<parameter name="c" type="character"/>
-			</parameters>
-			<preconditions>
-				<precondition predicate="alive">
-					<parameter name="c"/>
-				</precondition>
-				<precondition predicate="infected">
-					<parameter name="c"/>
-				</precondition>				
-			</preconditions>
-			<effects>
-				<effect predicate="dead">
-					<parameter name="c"/>
-				</effect>
-				<effect predicate="alive" negation="true">
-					<parameter name="c"/>
-				</effect>
-			</effects>
-		</operator>
 		<operator name="cure">
 			<parameters>
 				<parameter name="c1" type="character"/>
@@ -752,6 +696,10 @@
 				</precondition>
 				<precondition predicate="isantidote">
 					<parameter name="i"/>
+				</precondition>
+				<precondition predicate="!=">
+					<parameter name="c1"/>
+					<parameter name="c2"/>
 				</precondition>
 			</preconditions>
 			<effects>
@@ -796,27 +744,6 @@
 				</effect>
 			</effects>
 		</operator>
-		<operator name="dieofstarvation">
-			<parameters>
-				<parameter name="c" type="character"/>
-			</parameters>
-			<preconditions>
-				<precondition predicate="alive">
-					<parameter name="c"/>
-				</precondition>
-				<precondition predicate="starving">
-					<parameter name="c"/>
-				</precondition>				
-			</preconditions>
-			<effects>
-				<effect predicate="dead">
-					<parameter name="c"/>
-				</effect>
-				<effect predicate="alive" negation="true">
-					<parameter name="c"/>
-				</effect>
-			</effects>
-		</operator>
 		<operator name="feed">
 			<parameters>
 				<parameter name="c1" type="character"/>
@@ -851,6 +778,10 @@
 				</precondition>
 				<precondition predicate="isfood">
 					<parameter name="i"/>
+				</precondition>
+				<precondition predicate="!=">
+					<parameter name="c1"/>
+					<parameter name="c2"/>
 				</precondition>
 			</preconditions>
 			<effects>
@@ -897,8 +828,7 @@
 	<eventeffects>
 		<event name="go" tension="="/>
 		<event name="get" tension="+"/>
-		<event name="putdown" tension="-"/>
-		<event name="ask" tension="="/>
+		<event name="ask" tension="+"/>
 		<event name="give" tension="+"/>
 		<event name="fixbridge" tension="+"/>
 		<event name="opendoor" tension="+"/>
@@ -907,7 +837,5 @@
 		<event name="kill" tension="+"/>
 		<event name="attack" tension="+"/>
 		<event name="starve" tension="+"/>
-		<event name="dieofinfection" tension="+"/>
-		<event name="dieofstarvation" tension="+"/>
 	</eventeffects>
 </world>

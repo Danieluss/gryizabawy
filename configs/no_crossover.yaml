@@ -1,0 +1,13 @@
+n_quests: 3
+path: log/long_3.json
+quest_generator_args:
+  population_size: 100
+  epochs: 100
+  tournament_size: 3
+  crossover_probability: 0.0
+  mutation_probability: 1.0
+parser_args:
+  xml_path: data/geneticquest_db.xml
+world_model_args:
+  initial_state_n: 15
+  final_state_n: 5
